@@ -1,0 +1,15 @@
+****** example of the experimental condition ******
+100.0     //mesurement time (s)
+1.5e+6    //intensity of the beam (pps)
+0.7       //purity of the beam (in this case 6He)
+5.0       //thickness of the target (um)
+0.667     //purity of the target particle (in this case p)
+1.0476e23  //density of the target (atoms/cm3)
+5.0       //the length of the Si strip (vertical) (cm)
+0.3125    //the length of the Si strip (horizontal) (cm)
+17.0      //angle (position) of the center of the detector (deg)
+8.0       //energy of the initial particle (MeV/u)
+15.0      //the distance between the center of target and the center of
+detector (cm)
+0.5       //energy resolution of Si detector (MeV)
+1.0       //beam size of 6He (cm in diameter)
