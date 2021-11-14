@@ -8,5 +8,5 @@ You shoud do 5 steps as follows:
 3. cmake ..  
 4. make -jN  
 5. a.out  
-You can start your simulation now!
+
   
