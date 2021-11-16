@@ -151,27 +151,26 @@ double Beam::NuclearReaction(double position[4],double direction_Start[3], doubl
         if(cm_ang_deg>=i && cm_ang_deg<1){
 		    Yield = purity*density*position[3]*target_purity*sigma[i]*1.0e-27*Solid_angle(0.0,cm_angle[i]);
            	//Yield = purity*density*thickness*target_purity*sigma[i]*1.0e-27*Solid_angle(0.0,cm_angle[i]);
-            //Cosidering the detector's φ in geometry, we should correct the solid  angle: φ/360=atan(5cm/20cm)/(2*M_PI)~0.03899 
-            Yield = Yield * 0.03899 * 36.0 * 24.0  * 6.5 * 180;
+            Yield = Yield  * 36.0 * 24.0  * 6.5 * 180;
             break;
         }
         else if( cm_ang_deg == 1.0){
             Yield = purity*density*position[3]*target_purity*sigma[0]*1.0e-27*Solid_angle(cm_angle[0],cm_angle[1]);
             //Yield = purity*density*thickness*target_purity*sigma[0]*1.0e-27*Solid_angle(cm_angle[0],cm_angle[1]);
-            Yield = Yield * 0.03899 * 36.0 * 24.0  * 6.5 * 180;
+            Yield = Yield * 36.0 * 24.0  * 6.5 * 180;
             break;
         }
 		else if(cm_ang_deg>1 && cm_ang_deg>i && cm_ang_deg<=i+1){
 		    Yield = purity*density*position[3]*target_purity*(sigma[i-1]+sigma[i])*0.5*1.0e-27*Solid_angle(cm_angle[i-1],cm_angle[i]);
             //Yield = purity*density*thickness*target_purity*(sigma[i-1]+sigma[i])*0.5*1.0e-27*Solid_angle(cm_angle[i-1],cm_angle[i]);
-            Yield = Yield * 0.03899 * 36.0 * 24.0  * 6.5 * 180;
+            Yield = Yield * 36.0 * 24.0  * 6.5 * 180;
             break;
         }
     }
 
     //Saving the data of directional cosine, angle in lab., Yield, of emitted particle, 
-    Emit_particle[0] = sin(lab_angle_rad)*cos(omega*to_rad);
-    Emit_particle[1] = sin(lab_angle_rad)*sin(omega*to_rad);
+    Emit_particle[0] = sin(lab_angle_rad)*cos(omega);
+    Emit_particle[1] = sin(lab_angle_rad)*sin(omega);
     Emit_particle[2] = cos(lab_angle_rad);
     Emit_particle[3] = lab_angle_rad;
     Emit_particle[4] = cm_ang_deg;
