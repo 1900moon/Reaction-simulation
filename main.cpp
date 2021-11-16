@@ -37,15 +37,15 @@ int main( int argc, char **argv )
     tree->Branch("reac_z", &reac_z, "reac_z/D");
     tree->Branch("reac_energy", &reac_energy, "reac_energy/D");
     
-	//The emmited particle of 7Li:emited angle in the c.m. system , Yield of the d(6He,7Li)n
+    //The emmited particle of 7Li:emited angle in the c.m. system , Yield of the d(6He,7Li)n
     tree->Branch("cm_ang", &cm_ang, "cm_ang/D");
     tree->Branch("Yield", &Yield, "Yield/D");
 
-	//The emitted energy from target surface and the detected energy within the si detector
+    //The emitted energy from target surface and the detected energy within the si detector
     tree->Branch("part_energy", &part_energy, "part_energy/D");
     tree->Branch("part_det_energy", &part_det_energy, "part_det_energy/D");
+	
     //The 7Li particle position in detector surface
-   
     tree->Branch("det_x", &det_x, "det_x/D");
     tree->Branch("det_y", &det_y, "det_y/D");
 
@@ -68,9 +68,9 @@ int main( int argc, char **argv )
 
     double Yield_all[180];
     int cm_all[180];
-	for(int i=0; i<180; i++){
-		cm_all[i] = 0.0;
-		Yield_all[i] = 0.0;
+    for(int i=0; i<180; i++){
+	cm_all[i] = 0.0;
+	Yield_all[i] = 0.0;
     }
 
     TH1F *h_strip = new TH1F( "h_strip", "", 100, 0., 10 );
@@ -95,17 +95,17 @@ int main( int argc, char **argv )
 
         //get the reaction point information including position and energy slowed by target
         beam_test->reation_loc_target(position,Inci_Energy);
-		reac_x = position[0];
-		reac_y = position[1];
-		reac_z = position[2];
-		reac_energy = Inci_Energy[0];
+	reac_x = position[0];
+	reac_y = position[1];
+	reac_z = position[2];
+	reac_energy = Inci_Energy[0];
 		
         //get the reaction Yield and direction of emitted particle 7Li
-		Yield_reac = beam_test->NuclearReaction(position,direction_Start, Inci_Energy, Emit_particle);
+	Yield_reac = beam_test->NuclearReaction(position,direction_Start, Inci_Energy, Emit_particle);
 
         //get the position and energy as 7Li leaves the target surface
-		beam_test->leave_target(position, Emit_particle, position_Emit);
-		part_energy = Emit_particle[6]/7.0;
+	beam_test->leave_target(position, Emit_particle, position_Emit);
+	part_energy = Emit_particle[6]/7.0;
 		
         // judging whether 7Li is in detector
         int flag;
@@ -138,7 +138,6 @@ int main( int argc, char **argv )
             h_strip->Fill(part_det_energy);
             tree->Fill();
         }
-       // tree->Fill();
     }
     ofstream read;
     read.open("Yield.txt");
