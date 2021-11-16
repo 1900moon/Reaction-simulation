@@ -43,44 +43,41 @@ double generate_normal(double mu, double sigma) //Box–Muller's method
 
 double Solid_angle(double theta1,double theta2)
 {
-	double solid_angle;
-	double to_rad = M_PI / 180.0;
-	theta1 = theta1 * to_rad;
-	theta2 = theta2 * to_rad;
-	//dΩ=2*Pi*sin(θ)dθ
-	solid_angle = 2.0 * M_PI * (cos(theta1)-cos(theta2));
-	//cout<<theta1*180.0/M_PI<<"  "<<theta2*180.0/M_PI<<"  "<<solid_angle<<"*****************"<<endl;
-	return solid_angle;
+    double solid_angle;
+    double to_rad = M_PI / 180.0;
+    //dΩ=2*Pi*sin(θ)dθ
+    solid_angle = 2.0 * M_PI * (cos(theta1* to_rad)-cos(theta2* to_rad));
+    return solid_angle;
 }
 
 double Qequation(double Inci_Energy,double theta,double cm_ang_rad, double Gamma)
 {
-	double mass[4]={MASS::MASS_6HE,MASS::MASS_d,MASS::MASS_7Li,MASS::MASS_n};
-	double Qval = STANDARD::Qvalue;
-  	double term1,term2,term3,sqrtEb,Eb;
-	double theta_cm_turn ;//the emitted partile wiht the largest angle in lab system
- 	term1=sqrt(mass[0]*mass[2]*Inci_Energy)*cos(theta)/(mass[3]+mass[2]);
- 	term2=((mass[3]-mass[0])/(mass[3]+mass[2])+mass[0]*mass[2]*cos(theta)*cos(theta)/((mass[3]+mass[2])*(mass[3]+mass[2])))*Inci_Energy;
-  	term3=mass[3]*Qval/(mass[3]+mass[2]);
- 	theta_cm_turn = asin(1.0/Gamma)+90.0*M_PI/180.0;
+    double mass[4]={MASS::MASS_6HE,MASS::MASS_d,MASS::MASS_7Li,MASS::MASS_n};
+    double Qval = STANDARD::Qvalue;
+    double term1,term2,term3,sqrtEb,Eb;
+    double theta_cm_turn ;//the emitted partile wiht the largest angle in lab system
+    term1=sqrt(mass[0]*mass[2]*Inci_Energy)*cos(theta)/(mass[3]+mass[2]);
+    term2=((mass[3]-mass[0])/(mass[3]+mass[2])+mass[0]*mass[2]*cos(theta)*cos(theta)/((mass[3]+mass[2])*(mass[3]+mass[2])))*Inci_Energy;
+    term3=mass[3]*Qval/(mass[3]+mass[2]);
+    theta_cm_turn = asin(1.0/Gamma)+90.0*M_PI/180.0;
 
-  	if(cm_ang_rad < theta_cm_turn)
-  	{
-		sqrtEb = term1+sqrt(abs(term2+term3));
-   		Eb = sqrtEb*sqrtEb;
+    if(cm_ang_rad < theta_cm_turn)
+    {
+	sqrtEb = term1+sqrt(abs(term2+term3));
+   	Eb = sqrtEb*sqrtEb;
     }
     else
     {
     	sqrtEb = term1-sqrt(abs(term2+term3));
         Eb = sqrtEb*sqrtEb;
     }
-  	return Eb;
+    return Eb;
 }
 int Dindex(double val)
 {
-	int ll;
-	ll = log(val/10.0)/log(1.02);
-	if(ll<0)ll=0;
-	if(ll>=STANDARD::DIMD)ll=STANDARD::DIMD-1;
-	return ll;
+    int ll;
+    ll = log(val/10.0)/log(1.02);
+    if(ll<0)ll=0;
+    if(ll>=STANDARD::DIMD)ll=STANDARD::DIMD-1;
+    return ll;
 }
