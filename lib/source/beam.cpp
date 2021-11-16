@@ -57,7 +57,7 @@ void Beam::read_parameters()
     }
     read.close();  
 
-	//Read stoping cross section of 7Li in hydrogen2
+    //Read stoping cross section of 7Li in hydrogen2
     read.open("/home/zhangq/桌面/C++/Simulation_modified1/Stoppingpower/7LiInHydrogen.dat");
     if(!read){
         cout<<"Open dEdx1 file error!"<<endl;
@@ -102,7 +102,7 @@ void Beam::generate_beam(double position[4],double direction_Start[3],double Inc
     direction_Start[0] = 0.0;
     direction_Start[1] = 0.0;
     direction_Start[2] = 1.0;
-	Inci_Energy[0] = particle_energy;
+    Inci_Energy[0] = particle_energy;
 } 
 
 //Generating the reaction point via random number(***energy loss and straggling from lise++ value ***)
@@ -119,12 +119,12 @@ void Beam::reation_loc_target(double position[4], double Inci_Energy[1])
 double Beam::NuclearReaction(double position[4],double direction_Start[3], double Inci_Energy[1], double Emit_particle[7])
 {
     double mass[4]={MASS::MASS_6HE,MASS::MASS_d,MASS::MASS_7Li,MASS::MASS_n};
-	double Qval = STANDARD::Qvalue;
+    double Qval = STANDARD::Qvalue;
     double delta_cm = 1.0;// 1 degree in the center of mass system
     double solid_angle;
-	double Emit_cm_Angle = 180.0;//in the ceter of system
+    double Emit_cm_Angle = 180.0;//in the ceter of system
     double to_deg = 180.0 / M_PI;
-	double to_rad = M_PI / 180.0;
+    double to_rad = M_PI / 180.0;
     double Ecm;
     double cm_ang_deg, cm_ang_rad,cos_lab_angle,lab_angle_rad,lab_angle_deg,omega;
     double cosemitangle = 0.0;
@@ -132,25 +132,25 @@ double Beam::NuclearReaction(double position[4],double direction_Start[3], doubl
     double Yield;
     double EmitAngle;
     double EmitEnergy;
-	Ecm = Inci_Energy[0] * mass[1]/(mass[0]+mass[1]);
+    Ecm = Inci_Energy[0] * mass[1]/(mass[0]+mass[1]);
 
-	cm_ang_deg = Emit_cm_Angle * generate_standard();//generate a angle via random number in the c.m. system
+    cm_ang_deg = Emit_cm_Angle * generate_standard();//generate a angle via random number in the c.m. system
     omega=2.0*M_PI*generate_standard();// generate azimuth φ(0-2*PI) via random number
-	cm_ang_rad = cm_ang_deg * to_rad;
+    cm_ang_rad = cm_ang_deg * to_rad;
 	
     //calculate the angle in lab system
     Gamma=(mass[0]*mass[2]*(mass[2]+mass[3]))/(mass[1]*mass[3]*(mass[0]+mass[1]))*Ecm/(Ecm+Qval);
     Gamma=sqrt(Gamma);
     cos_lab_angle = (Gamma+cos(cm_ang_rad))/sqrt(1+Gamma*Gamma+2*Gamma*cos(cm_ang_rad));
     lab_angle_rad = acos(cos_lab_angle);
-	lab_angle_deg = lab_angle_rad * to_deg;
+    lab_angle_deg = lab_angle_rad * to_deg;
     //cm_to_lab = pow((1+Gamma*Gamma+2*Gamma*cos(cm_ang_rad)),1.5)/(1+ Gamma*cos(cm_ang_rad));
 	
     //calculate the Yield for each angle in the c.m. system
     for(int i=0; i<180; i++){
         if(cm_ang_deg>=i && cm_ang_deg<1){
-		    Yield = purity*density*position[3]*target_purity*sigma[i]*1.0e-27*Solid_angle(0.0,cm_angle[i]);
-           	//Yield = purity*density*thickness*target_purity*sigma[i]*1.0e-27*Solid_angle(0.0,cm_angle[i]);
+	    Yield = purity*density*position[3]*target_purity*sigma[i]*1.0e-27*Solid_angle(0.0,cm_angle[i]);
+            //Yield = purity*density*thickness*target_purity*sigma[i]*1.0e-27*Solid_angle(0.0,cm_angle[i]);
             Yield = Yield  * 36.0 * 24.0  * 6.5 * 180;
             break;
         }
@@ -160,8 +160,8 @@ double Beam::NuclearReaction(double position[4],double direction_Start[3], doubl
             Yield = Yield * 36.0 * 24.0  * 6.5 * 180;
             break;
         }
-		else if(cm_ang_deg>1 && cm_ang_deg>i && cm_ang_deg<=i+1){
-		    Yield = purity*density*position[3]*target_purity*(sigma[i-1]+sigma[i])*0.5*1.0e-27*Solid_angle(cm_angle[i-1],cm_angle[i]);
+	else if(cm_ang_deg>1 && cm_ang_deg>i && cm_ang_deg<=i+1){
+	    Yield = purity*density*position[3]*target_purity*(sigma[i-1]+sigma[i])*0.5*1.0e-27*Solid_angle(cm_angle[i-1],cm_angle[i]);
             //Yield = purity*density*thickness*target_purity*(sigma[i-1]+sigma[i])*0.5*1.0e-27*Solid_angle(cm_angle[i-1],cm_angle[i]);
             Yield = Yield * 36.0 * 24.0  * 6.5 * 180;
             break;
@@ -176,12 +176,12 @@ double Beam::NuclearReaction(double position[4],double direction_Start[3], doubl
     Emit_particle[4] = cm_ang_deg;
     Emit_particle[5] = Yield;
 
-	//calculating the emitted angle and energy of 7Li
-	for(int i=0;i<3;i++) cosemitangle=cosemitangle+direction_Start[i]*Emit_particle[i];//the output angle
-	EmitAngle = acos(cosemitangle);
-	EmitEnergy = Qequation(Inci_Energy[0], EmitAngle, cm_ang_rad, Gamma);
+    //calculating the emitted angle and energy of 7Li
+    for(int i=0;i<3;i++) cosemitangle=cosemitangle+direction_Start[i]*Emit_particle[i];//the output angle
+    EmitAngle = acos(cosemitangle);
+    EmitEnergy = Qequation(Inci_Energy[0], EmitAngle, cm_ang_rad, Gamma);
     Emit_particle[6] = EmitEnergy;
-	return Yield;
+    return Yield;
 }
 
 //getting the position and energy as 7Li leaves target surface and saving data in a array
@@ -200,7 +200,7 @@ double Beam::leave_target(double position[4], double Emit_particle[7], double po
     position_Emit[1] = position[1] + distance * Emit_particle[1];
     position_Emit[2] = position[2] + distance * Emit_particle[2]; 
     Emit_particle[6] -= energy_loss;
-	return 1;
+    return 1;
 }
 
 //judging whether the 7Li enters in detector surface
